@@ -1,0 +1,74 @@
+import numpy as np
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+class KNN_Class:
+    '''KNN Classification class.'''
+    def __init__(self, k):
+        '''
+        Initializes training data and k.
+
+        Parameters:
+        k | int | number of nearest neighbors to find/use
+        '''
+        self.k = k
+        self.X_train = None
+        self.y_train = None
+
+    def fit(self, X, y):
+        '''
+        Stores training data.
+
+        Returns self to enable chaining.
+        '''
+        self.X_train = np.array(X)
+        self.y_train = np.array(y)
+        if self.X_train.size == 0 or self.y_train.size == 0 or self.X_train.shape[0] != self.y_train.shape[0]:
+            raise ValueError('Invalid data dimensions')
+        return self
+
+    def _euclidean_distance(self, a, b):
+        '''Euclidean distance btwn 2 pts, interchange for alt. distance methods.'''
+        return np.sqrt(np.sum((a - b) ** 2))
+
+    def predict(self, X):
+        '''
+        Predicts the y values for test data X
+
+        Parameters:
+        X : array/like, test sample data for prediction.
+
+        Returns np array predictions containing predicted y values.
+        '''
+        X = np.array(X)
+        if X.size == 0:
+            raise ValueError('Data cannot be empty')
+        predictions = []
+
+        for x in X:
+            distances = np.array([self._euclidean_distance(x, x_train) for x_train in self.X_train])
+
+            nn_indices = np.argsort(distances)[:self.k]
+            nn_values = self.y_train[nn_indices]
+
+            values, counts = np.unique(nn_values, return_counts=True)
+            predictions.append(values[np.argmax(counts)])
+
+        return np.array(predictions)
+iris = load_iris()
+X, y = iris.data, iris.target
+
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=123
+)
+
+model = KNN_Class(k=3)
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+acc = accuracy_score(y_test, y_pred)
+print(f"KNN accuracy on Iris: {acc:.2f}")
