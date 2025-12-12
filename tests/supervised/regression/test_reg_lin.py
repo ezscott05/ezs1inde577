@@ -7,8 +7,8 @@ from sklearn.metrics import mean_squared_error
 
 # general functionality tests
 
-def test_linear_regression_synthetic():
-    # linear data
+def test_basic():
+    # test with basic, linear data
     X = np.array([[0], [1], [2], [3]])
     y = np.array([1, 3, 5, 7])
 
@@ -36,6 +36,7 @@ def test_linear_regression_real_data():
 # edge case tests
 
 def test_single_sample():
+    # test with only one sample to learn from
     X = np.array([[5]])
     y = np.array([10])
     model = Lin_Reg(lr=0.05, epochs=1000)
@@ -44,6 +45,7 @@ def test_single_sample():
     assert np.isclose(pred[0], 10, atol=0.1)
 
 def test_zero_features():
+    # test with no feature data to learn from
     X = np.empty((3, 0))
     y = np.array([1, 2, 3])
     model = Lin_Reg()
@@ -52,7 +54,8 @@ def test_zero_features():
     # should predict mean with no feature data
     assert np.allclose(preds, np.mean(y))
 
-def test_constant_feature():
+def test_constant():
+    # test with constant feature data
     X = np.array([[1], [1], [1]])
     y = np.array([2, 2, 2])
     model = Lin_Reg(lr=0.05, epochs=1000)
@@ -64,11 +67,13 @@ def test_constant_feature():
 # invalid input tests
 
 def test_empty():
+    # test proper error handling with empty input
     model = Lin_Reg()
     with pytest.raises(ValueError):
         model.fit(np.array([]), np.array([]))
 
 def test_mismatch():
+    # test proper error handling with mismatched X,y sizes
     X = np.array([[1], [2]])
     y = np.array([1])
     model = Lin_Reg()
@@ -76,6 +81,7 @@ def test_mismatch():
         model.fit(X, y)
 
 def test_nonnumeric():
+    # test proper error handling with nonnumeric data
     X = np.array([['a'],['b']])
     y = np.array([0,1])
     model = Lin_Reg()

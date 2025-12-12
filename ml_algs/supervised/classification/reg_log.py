@@ -23,14 +23,14 @@ class Log_Reg:
         '''
         X = np.array(X)
         y = np.array(y)
-
+        # invalid data case handler
         if X.shape[0] == 0 or y.size == 0 or X.shape[0] != y.shape[0]:
             raise(ValueError('Invalid data dimensions'))
 
         self.n_samples, self.n_features = X.shape
         self.weights = np.zeros(self.n_features)
         self.bias = 0.0
-
+        # no feature case handler
         if self.n_features == 0:
             self.bias = np.mean(y)
             return self

@@ -38,6 +38,7 @@ def test_reg_large():
 # edge case tests
 
 def test_k_too_large():
+    # test choosing more neighbors than there are points
     X_train = np.array([[0], [1]])
     y_train = np.array([0.0, 1.0])
 
@@ -49,6 +50,7 @@ def test_k_too_large():
     assert 0.0 <= pred[0] <= 1.0
 
 def test_equidistant():
+    # test with equidistant neighbors
     X_train = np.array([[0], [2]])
     y_train = np.array([1.0, 3.0])
     model = KNN_Reg(k=2)
@@ -62,6 +64,7 @@ def test_equidistant():
 # invalid input tests
 
 def test_empty():
+    # test proper error handling with empty input
     model = KNN_Reg(k=1)
     model.fit(np.array([[0]]), np.array([0]))
 
@@ -69,6 +72,7 @@ def test_empty():
         model.predict(np.array([]))
 
 def test_nonnumeric():
+    # test proper error handling with nonnumeric data
     model = KNN_Reg(k=1)
     model.fit(np.array([[0]]), np.array([0]))
 

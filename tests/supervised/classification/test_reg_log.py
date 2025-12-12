@@ -19,6 +19,7 @@ def test_simple():
     assert np.array_equal(pred, y)
 
 def test_p_range():
+    # test that probabilities fall within the valid range
     X = np.array([[0],[1],[2]])
     y = np.array([0,1,1])
     
@@ -29,6 +30,7 @@ def test_p_range():
     assert np.all(probs >= 0) and np.all(probs <= 1)
 
 def test_iris():
+    # test on iris dataset
     iris = load_iris()
     # Only classes 0 and 1
     X = iris.data[iris.target < 2]
@@ -59,7 +61,8 @@ def test_threshold():
 
 # edge case tests
 
-def test_logistic_single_sample():
+def test_single_sample():
+    # test with only one sample to learn from
     X = np.array([[5]])
     y = np.array([1])
     model = Log_Reg(lr=0.1, epochs=500)
@@ -67,7 +70,8 @@ def test_logistic_single_sample():
     pred = model.predict(X)
     assert pred[0] == 1
 
-def test_logistic_zero_features():
+def test_zero_features():
+    # test with only resulting data and no feature data
     X = np.empty((3,0))  # 3 samples, 0 features
     y = np.array([0,1,0])
     model = Log_Reg()
@@ -77,7 +81,8 @@ def test_logistic_zero_features():
     majority = 1  # np.mean(y) >= 0.5 → 1
     assert np.all(pred == majority)
 
-def test_logistic_all_labels_identical():
+def test_all_labels_identical():
+    # test with identical y values
     X = np.array([[1],[2],[3]])
     y = np.array([1,1,1])
     model = Log_Reg()
@@ -88,11 +93,13 @@ def test_logistic_all_labels_identical():
 # invalid input tests
 
 def test_empty():
+    # test proper error handling with empty input
     model = Log_Reg()
     with pytest.raises(ValueError):
         model.fit(np.array([]), np.array([]))
 
 def test_mismatch():
+    # test proper error handling with a mismatch of X/y sizes
     X = np.array([[1],[2]])
     y = np.array([1])
     model = Log_Reg()
@@ -100,6 +107,7 @@ def test_mismatch():
         model.fit(X, y)
 
 def test_nonnumeric():
+    # test proper error handling with nonnumeric data
     X = np.array([['a'],['b']])
     y = np.array([0,1])
     model = Log_Reg()

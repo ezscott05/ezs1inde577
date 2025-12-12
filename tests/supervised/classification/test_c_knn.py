@@ -8,6 +8,7 @@ from ml_algs.supervised.classification.c_knn import KNN_Class
 # general functionality tests
 
 def test_format():
+    # test that the formatting system works
     X = np.array([[1, 2], [3, 4], [5, 6]])
     y = np.array([0, 1, 0])
 
@@ -19,6 +20,7 @@ def test_format():
 
 
 def test_k1():
+    # test choice of 1 between 2 neighbors
     X = np.array([[0], [10]])
     y = np.array([0, 1])
 
@@ -32,6 +34,7 @@ def test_k1():
 
 
 def test_majority():
+    # test funcionality of basic majority vote
     X = np.array([[0], [1], [2]])
     y = np.array([0, 0, 1])
 
@@ -41,6 +44,7 @@ def test_majority():
 
 
 def test_iris():
+    # test on iris dataset
     iris = load_iris()
     X, y = iris.data, iris.target
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=123)
@@ -55,6 +59,7 @@ def test_iris():
 # edge case tests
 
 def test_k_too_large():
+    # test with choosing more neighbors than there are points
     X = np.array([[1], [2], [3]])
     y = np.array([0, 1, 0])
 
@@ -65,6 +70,7 @@ def test_k_too_large():
     assert preds[0] in y
 
 def test_equidistant():
+    # test with equidistant neighbors
     X_train = np.array([[0], [2]])
     y_train = np.array([0, 1])
     model = KNN_Class(k=2)
@@ -79,6 +85,7 @@ def test_equidistant():
 # invalid input
 
 def test_empty():
+    # test proper error handling with empty input
     model = KNN_Class(k=1)
     model.fit(np.array([[0]]), np.array([0]))
 
@@ -86,6 +93,7 @@ def test_empty():
         model.predict(np.array([]))
 
 def test_nonnumeric():
+    # test proper error handling with nonnumeric input
     model = KNN_Class(k=1)
     model.fit(np.array([[0]]), np.array([0]))
 

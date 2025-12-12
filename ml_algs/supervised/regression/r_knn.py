@@ -21,6 +21,7 @@ class KNN_Reg:
         '''
         self.X_train = np.array(X)
         self.y_train = np.array(y)
+        # invalid data case handler
         if self.X_train.size == 0 or self.y_train.size == 0 or self.X_train.shape[0] != self.y_train.shape[0]:
             raise ValueError('Invalid data dimensions')
         return self
@@ -39,11 +40,13 @@ class KNN_Reg:
         Returns np array predictions containing predicted y values.
         '''
         X = np.array(X)
+        # invalid data case handler
         if X.size == 0:
             raise ValueError('Data cannot be empty')
         predictions = []
 
         for x in X:
+            # predictor loop :p
             distances = np.array([self._euclidean_distance(x, x_train) for x_train in self.X_train])
 
             nn_indices = np.argsort(distances)[:self.k]

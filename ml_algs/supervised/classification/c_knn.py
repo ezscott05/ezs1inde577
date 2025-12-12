@@ -47,6 +47,7 @@ class KNN_Class:
         predictions = []
 
         for x in X:
+            # prediction loop :p
             distances = np.array([self._euclidean_distance(x, x_train) for x_train in self.X_train])
 
             nn_indices = np.argsort(distances)[:self.k]
@@ -56,19 +57,3 @@ class KNN_Class:
             predictions.append(values[np.argmax(counts)])
 
         return np.array(predictions)
-iris = load_iris()
-X, y = iris.data, iris.target
-
-from sklearn.model_selection import train_test_split
-
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=123
-)
-
-model = KNN_Class(k=3)
-model.fit(X_train, y_train)
-
-y_pred = model.predict(X_test)
-
-acc = accuracy_score(y_test, y_pred)
-print(f"KNN accuracy on Iris: {acc:.2f}")
