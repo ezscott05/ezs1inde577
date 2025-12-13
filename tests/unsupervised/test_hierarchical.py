@@ -5,6 +5,7 @@ from ml_algs.unsupervised.hierarchical import HierarchicalClustering
 # general functionality tests
 
 def test_basic():
+    # basic model should be valid
     X = np.array([
         [0, 0],
         [0, 1],
@@ -20,6 +21,7 @@ def test_basic():
     assert set(labels) == {0, 1}
 
 def test_deterministic():
+    # testing that the model is deterministic by running it twice
     X = np.array([
         [1, 1],
         [1, 2],
@@ -37,6 +39,7 @@ def test_deterministic():
 # edge case tests
 
 def test_single_sample():
+    # test single sample forming one cluster correctly
     X = np.array([[0.0, 0.0]])
 
     model = HierarchicalClustering(n_clusters=1)
@@ -47,11 +50,8 @@ def test_single_sample():
     assert labels[0] == 0
 
 def test_identical():
-    X = np.array([
-        [1, 1],
-        [1, 1],
-        [1, 1]
-    ])
+    # test repeated identical samples clustering without error
+    X = np.array([[1, 1], [1, 1], [1, 1]])
 
     model = HierarchicalClustering(n_clusters=2)
     model.fit(X)
@@ -61,6 +61,7 @@ def test_identical():
     assert set(labels).issubset({0, 1})
 
 def test_equal():
+    # test 3 pts -> 3 clusters
     X = np.array([
         [0],
         [1],
@@ -76,6 +77,7 @@ def test_equal():
 # invalid input test
 
 def test_empty():
+    # basic empty input test
     X = np.array([])
 
     model = HierarchicalClustering(n_clusters=2)
@@ -84,6 +86,7 @@ def test_empty():
         model.fit(X)
 
 def test_wrong_dim():
+    # 1D X where 2D expected
     X = np.array([1, 2, 3])
 
     model = HierarchicalClustering(n_clusters=2)
@@ -92,9 +95,10 @@ def test_wrong_dim():
         model.fit(X)
 
 def test_nonnumeric():
+    # nonnumeric input test where numeric expected
     X = np.array([
-        ["a", "b"],
-        ["c", "d"]
+        ['antidisestablishmentarianism', 'b'],
+        ['c', 'd']
     ])
 
     model = HierarchicalClustering(n_clusters=2)
@@ -103,6 +107,7 @@ def test_nonnumeric():
         model.fit(X)
 
 def test_too_many_clusters():
+    # test error raising when attempting to form more clusters than points
     X = np.array([
         [0],
         [1]

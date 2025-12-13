@@ -35,17 +35,17 @@ class GradientBoosting:
 
         # error handlers
         if y.ndim != 1:
-            raise TypeError("y must be 1D")
+            raise TypeError('y must be 1D')
         if not set(np.unique(y)).issubset({0, 1}):
-            raise TypeError("GradientBoosting supports only binary {0,1}")
+            raise ValueError('GradientBoosting supports only binary {0,1}')
         if X.ndim != 2 or X.shape[0] == 0:
             raise ValueError("X must be non-empty 2D array.")
         if y.size == 0 or X.shape[0] != y.shape[0]:
-            raise ValueError("Invalid data dimensions.")
+            raise ValueError('Invalid data dimensions')
         try:
             X = X.astype(float)
         except Exception:
-            raise TypeError("X must contain numeric values.")
+            raise TypeError('X must contain numeric values')
 
         # initial model is log odds
         p = np.clip(np.mean(y), 1e-6, 1 - 1e-6)

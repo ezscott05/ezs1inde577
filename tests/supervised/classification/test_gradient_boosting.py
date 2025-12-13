@@ -85,7 +85,7 @@ def test_nonbinary():
     y = np.array([0, 1, 2])
 
     model = GradientBoosting()
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError):
         model.fit(X, y)
 
 def test_y_not_1d():
