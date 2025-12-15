@@ -30,7 +30,7 @@ def test_xor():
     ])
     y = np.array([0, 1, 1, 0])
 
-    model = MLP(n_hidden=4, lr=0.2, epochs=5000)
+    model = MLP(n_hidden=4, lr=0.2, epochs=6000)
     model.fit(X, y)
     preds = model.predict(X)
     print(preds)
