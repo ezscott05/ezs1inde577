@@ -31,4 +31,4 @@ Many regression models, such as linear regression, ridge regression, and LASSO a
 
 Test suites are divided into general functionality tests, which simply use the algorithm for basic tasks and ensures the validity of the results, edge case tests, which test for correct behavior in special cases, such as only a single sample being present, and invalid input tests, which test for proper error raising in the case of the user of the package attempting to perform an invalid action, usually predicting with an unfit model or feeding the model data in the wrong format.
 
-The notebooks folder will contain Jupyter Notebooks demonstrating use of the algorithms once they have been completed.
+The notebooks folder contains Jupyter notebooks demonstrating the functions of each algorithm, separated into demonstrations of classification, regression, and clustering.
