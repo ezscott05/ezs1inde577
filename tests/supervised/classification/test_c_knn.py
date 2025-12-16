@@ -82,7 +82,7 @@ def test_equidistant():
     # prediction should be either 0 or 1 (majority vote tie-breaker)
     assert pred[0] in [0, 1]
 
-# invalid input
+# invalid input tests
 
 def test_empty():
     # test proper error handling with empty input

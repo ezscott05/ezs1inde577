@@ -35,17 +35,10 @@ class Lin_Reg:
             # main diff btwn this and log is the prediction function
             y_pred = self.predict(X)
 
-            dw = np.zeros_like(self.weights)
-            db = 0.0
-
-            for i in range(self.n_samples):
-                diff = y_pred[i] - y[i]
-                db += diff
-                for j in range(self.n_features):
-                    dw[j] += diff * X[i][j]
-
-            dw /= self.n_samples
-            db /= self.n_samples
+            # vectorized gradient computation (old loop was very slow)
+            diff = y_pred - y
+            dw = np.dot(X.T, diff) / self.n_samples
+            db = np.mean(diff)
 
             self.weights -= self.lr * dw
             self.bias -= self.lr * db

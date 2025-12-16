@@ -30,7 +30,7 @@ def test_iris():
     acc = (clf.predict(X_test) == y_test).mean()
     assert acc >= 0.9
 
-# test hyperparameter behaviors
+# hyperparameter behavior tests
 
 def test_max_depth():
     # test max depth behavior
@@ -54,7 +54,7 @@ def test_no_split():
     preds = clf.predict(X)
     assert np.all(preds == np.bincount(y).argmax())
 
-# test edge cases
+# edge case tests
 
 def test_single_sample():
     # test with only one sample to learn from
@@ -90,7 +90,7 @@ def test_tie():
     pred = clf.predict([[1]])[0]
     assert pred in (0, 1)
 
-# test invalid inputs
+# invalid input tests
 
 def test_predict_before_fit():
     # test error handling when predict run with no model

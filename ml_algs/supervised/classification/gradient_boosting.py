@@ -9,13 +9,13 @@ class GradientBoosting:
         
         # error handlers
         if not isinstance(n_estimators, int) or n_estimators <= 0:
-            raise TypeError("n_estimators must be a positive integer")
+            raise TypeError('n_estimators must be a positive integer')
         if not isinstance(learning_rate, (int, float)) or learning_rate <= 0:
-            raise TypeError("learning_rate must be a positive number")
+            raise TypeError('learning_rate must be a positive number')
         if not isinstance(max_depth, int) or max_depth <= 0:
-            raise TypeError("max_depth must be a positive integer")
+            raise TypeError('max_depth must be a positive integer')
         if not isinstance(min_samples_split, int) or min_samples_split < 2:
-            raise TypeError("min_samples_split must be an integer ≥ 2")
+            raise TypeError('min_samples_split must be an integer ≥ 2')
 
         self.n_estimators = n_estimators
         self.learning_rate = learning_rate
@@ -83,9 +83,9 @@ class GradientBoosting:
         return np.vstack((1 - proba, proba)).T
 
     def predict(self, X):
-        if not hasattr(self, "trees") or not hasattr(self, "initial_log_odds"):
-            raise AttributeError("GradientBoosting instance is not fitted yet. Call fit() first.")
+        if not hasattr(self, 'trees') or not hasattr(self, 'initial_log_odds'):
+            raise AttributeError('GradientBoosting instance is not fitted yet. Call fit() first')
         X = np.asarray(X)
         if X.ndim != 2 or X.shape[0] == 0:
-            raise ValueError("X must be non-empty 2D array.")
+            raise ValueError('X must be non-empty 2D array')
         return (self.predict_p(X)[:, 1] >= 0.5).astype(int)

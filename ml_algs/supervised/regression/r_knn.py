@@ -43,15 +43,12 @@ class KNN_Reg:
         # invalid data case handler
         if X.size == 0:
             raise ValueError('Data cannot be empty')
-        predictions = []
+        n_test = X.shape[0]
+        predictions = np.zeros(n_test)
+        for i, x in enumerate(X):
+            # compute distances to all training points (vectorized bc old version was slow)
+            distances = np.linalg.norm(self.X_train - x, axis=1)
+            nn_idx = np.argsort(distances)[:self.k]
+            predictions[i] = np.mean(self.y_train[nn_idx])
 
-        for x in X:
-            # predictor loop :p
-            distances = np.array([self._euclidean_distance(x, x_train) for x_train in self.X_train])
-
-            nn_indices = np.argsort(distances)[:self.k]
-            nn_values = self.y_train[nn_indices]
-
-            predictions.append(np.mean(nn_values))
-
-        return np.array(predictions)
+        return predictions

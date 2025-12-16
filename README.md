@@ -27,6 +27,8 @@ The following list mirrors the structure of both the ml_algs folder, which conta
   - PCA (Principal Component Analysis)
   - t-SNE (t-distributed Stochastic Neighbor Embedding)
 
+Many regression models, such as linear regression, ridge regression, and LASSO are written using gradient descent or coordinate descent instead of the typical normal equation with matrix inversion and such.
+
 Test suites are divided into general functionality tests, which simply use the algorithm for basic tasks and ensures the validity of the results, edge case tests, which test for correct behavior in special cases, such as only a single sample being present, and invalid input tests, which test for proper error raising in the case of the user of the package attempting to perform an invalid action, usually predicting with an unfit model or feeding the model data in the wrong format.
 
 The notebooks folder will contain Jupyter Notebooks demonstrating use of the algorithms once they have been completed.

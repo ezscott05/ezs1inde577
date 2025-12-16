@@ -32,7 +32,7 @@ class TSNE:
         try:
             X = np.array(X, dtype=float)
         except ValueError:
-            raise TypeError("X must contain numeric values")
+            raise TypeError('X must contain numeric values')
         if X.size == 0:
             raise ValueError('X must be non-empty')
         n_samples = X.shape[0]
@@ -44,7 +44,7 @@ class TSNE:
         for i in range(self.n_iter):
             sum_Y = np.sum(np.square(self.embedding_), axis=1)
             D = -2.0 * np.dot(self.embedding_, self.embedding_.T)
-            D = 1.0 / (1.0 + (D + sum_Y[:, np.newaxis] + sum_Y[np.newaxis, :]))
+            D = 1.0 / (1e-12 + 1.0 + (D + sum_Y[:, np.newaxis] + sum_Y[np.newaxis, :]))
             np.fill_diagonal(D, 0)
 
             Q = D / np.sum(D)
@@ -62,7 +62,7 @@ class TSNE:
     def transform(self, X=None):
         '''Returns the learned embedding'''
         if self.embedding_ is None:
-            raise AttributeError("t-SNE not fitted yet.")
+            raise AttributeError('t-SNE not fitted yet')
         return self.embedding_
 
     def fit_transform(self, X):

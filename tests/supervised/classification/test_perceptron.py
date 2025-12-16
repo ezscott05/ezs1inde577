@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 from ml_algs.supervised.classification.perceptron import Perceptron
 
-# basic functionality tests
+# general functionality tests
 
 def test_separable():
     # test prediction on model fit to same obviously separable data

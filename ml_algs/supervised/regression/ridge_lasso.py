@@ -10,8 +10,8 @@ class Lin:
 
     def _fit_checks(self, X, y):
         '''Checks for valid data and minor config'''
-        X = np.array(X)
-        y = np.array(y)
+        X = np.array(X, dtype=float)
+        y = np.array(y, dtype=float)
         n_samples = X.shape[0]
         # invalid data case handler
         if n_samples == 0 or y.size == 0 or n_samples != y.shape[0]:
@@ -36,22 +36,15 @@ class Ridge(Lin):
         self.bias = 0.0
 
         for _ in range(self.epochs):
-            y_pred = self.predict(X)
-            dw = np.zeros_like(self.weights)
-            db = 0.0
+            # vectorized prediction
+            y_pred = X @ self.weights + self.bias
+            error = y_pred - y
 
-            for i in range(self.n_samples):
-                diff = y_pred[i] - y[i]
-                db += diff
-                for j in range(self.n_features):
-                    dw[j] += diff * X[i][j]
+            # vectorized gradient with ridge penalty (old loop based was slow)
+            dw = (X.T @ error) / self.n_samples + (self.alpha / self.n_samples) * self.weights
+            db = np.mean(error)
 
-            dw /= self.n_samples
-            db /= self.n_samples
-
-            # penalty
-            dw += self.alpha * self.weights / self.n_samples
-
+            # gradient step
             self.weights -= self.lr * dw
             self.bias -= self.lr * db
 
@@ -59,16 +52,12 @@ class Ridge(Lin):
 
     def predict(self, X):
         '''Predicts new y from model and new X'''
-        X = np.array(X)
+        X = np.array(X, dtype=float)
         if self.n_features == 0:
             return np.full(X.shape[0], self.bias)
-        preds = []
-        for row in X:
-            total = self.bias
-            for j in range(self.n_features):
-                total += self.weights[j] * row[j]
-            preds.append(total)
-        return np.array(preds)
+        # vectorized prediction
+        return X @ self.weights + self.bias
+
 
 class Lasso(Lin):
     '''LASSO regression model built on Lin'''
@@ -83,38 +72,27 @@ class Lasso(Lin):
         # inits
         self.weights = np.zeros(self.n_features)
         self.bias = 0.0
+        # coordinate descent because gradient descent was insanely slow
+        for epoch in range(self.epochs):
+            for j in range(self.n_features):
+                r_j = y - (X @ self.weights - X[:, j] * self.weights[j] + self.bias)
+                rho = np.dot(X[:, j], r_j)
+                if rho < -self.alpha/2:
+                    self.weights[j] = (rho + self.alpha/2) / np.sum(X[:, j]**2)
+                elif rho > self.alpha/2:
+                    self.weights[j] = (rho - self.alpha/2) / np.sum(X[:, j]**2)
+                else:
+                    self.weights[j] = 0
+            # update bias
+            self.bias = np.mean(y - X @ self.weights)
 
-        for _ in range(self.epochs):
-            y_pred = self.predict(X)
-            dw = np.zeros_like(self.weights)
-            db = 0.0
-
-            for i in range(self.n_samples):
-                diff = y_pred[i] - y[i]
-                db += diff
-                for j in range(self.n_features):
-                    dw[j] += diff * X[i][j]
-
-            dw /= self.n_samples
-            db /= self.n_samples
-
-            # penalty
-            dw += self.alpha * np.sign(self.weights) / self.n_samples
-
-            self.weights -= self.lr * dw
-            self.bias -= self.lr * db
 
         return self
 
     def predict(self, X):
         '''Predicts new y from model and new X'''
-        X = np.array(X)
+        X = np.array(X, dtype=float)
         if self.n_features == 0:
             return np.full(X.shape[0], self.bias)
-        preds = []
-        for row in X:
-            total = self.bias
-            for j in range(self.n_features):
-                total += self.weights[j] * row[j]
-            preds.append(total)
-        return np.array(preds)
+        # vectorized prediction
+        return X @ self.weights + self.bias

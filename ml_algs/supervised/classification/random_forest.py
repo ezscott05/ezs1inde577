@@ -22,13 +22,13 @@ class RandomForest:
 
         # invalid data case handlers
         if X.ndim != 2 or X.shape[0] == 0:
-            raise ValueError("X must be non-empty 2D array.")
+            raise ValueError('X must be non-empty 2D array')
         if y.size == 0 or X.shape[0] != y.shape[0]:
-            raise ValueError("Invalid data dimensions.")
+            raise ValueError('Invalid data dimensions')
         try:
             X = X.astype(float)
         except Exception:
-            raise TypeError("X must contain numeric values.")
+            raise TypeError('X must contain numeric values')
 
         self.n_samples, self.n_features = X.shape
         self.trees = []
@@ -66,17 +66,17 @@ class RandomForest:
     def predict(self, X):
         # error handlers
         if not hasattr(self, 'trees') or len(self.trees) == 0:
-            raise AttributeError('RandomForest not fitted yet.')
+            raise AttributeError('RandomForest not fitted yet')
         X = np.array(X)
         if X.ndim != 2:
-            raise ValueError('X must be 2D.')
+            raise ValueError('X must be 2D')
         if X.shape[1] != self.n_features:
-            raise ValueError('Feature count mismatch.')
+            raise ValueError('Feature count mismatch')
 
         try:
             X = X.astype(float)
         except Exception:
-            raise TypeError('X must contain numeric values.')
+            raise TypeError('X must contain numeric values')
 
         all_preds = []
         for tree, feats in zip(self.trees, self.feature_subsets):

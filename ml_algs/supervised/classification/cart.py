@@ -15,7 +15,7 @@ class Cart:
             self.threshold = threshold
             self.left = left
             self.right = right
-            self.value = value  # majority class at leaf
+            self.value = value
 
     def _gini(self, y):
         '''Calculates gini impurity for a set of labels (a node)'''
@@ -26,7 +26,6 @@ class Cart:
             impurity -= p * p
         return impurity
 
-    # ---------- SPLITTING SCORE ----------
     def _best_split(self, X, y):
         '''Searches for the optimal split at the current node'''
         best_feature = None

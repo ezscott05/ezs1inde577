@@ -32,15 +32,15 @@ class KMeans:
 
         # invalid input error handlers
         if X.ndim != 2 or X.shape[0] == 0:
-            raise ValueError("X must be a non-empty 2D array")
+            raise ValueError('X must be a non-empty 2D array')
         try:
             X = X.astype(float)
         except Exception:
-            raise TypeError("X must contain numeric values")
+            raise TypeError('X must contain numeric values')
 
         n_samples, n_features = X.shape
         if self.k > n_samples:
-            raise ValueError("k cannot be greater than number of samples")
+            raise ValueError('k cannot be greater than number of samples')
 
         # initialize centroids by sampling data points
         indices = np.random.choice(n_samples, self.k, replace=False)
